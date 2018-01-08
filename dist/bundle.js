@@ -108,7 +108,6 @@ function addToStack(e) {
             }
             // Keep track of special operators like '+-', or sqrt
             if (list.contains("spec-op")) {
-                console.log("hello");
                 specOp = true;
                 outputString = (0, _calculate.specOpCalculate)(Number(outputString), text);
                 output.textContent = outputString;
