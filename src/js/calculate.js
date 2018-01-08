@@ -22,18 +22,6 @@ function calculate(stack) {
                 case "/":
                     result /= Number(stack[i + 1]);
                     break;
-                case "√":
-                    result = Math.sqrt(result);
-                    amount = 2;
-                    break;
-                case "1/x":
-                    result = (1 / result);
-                    amount = 2;
-                    break;
-                case "+-":
-                    result = 0 - result;
-                    amount = 2;
-                    break;
                 case "^":
                     result = Math.pow(result, stack[i + 1]);
             }
@@ -43,4 +31,20 @@ function calculate(stack) {
     }
 }
 
-export {calculate};
+function specOpCalculate(num, op) {
+    let val;
+    switch (op) {
+        case "√":
+            val =  Math.sqrt(num);
+            break;
+        case "1/x":
+            val = 1 / num;
+            break;
+        case "+-":
+            val = 0 - num;
+            break;
+    }
+    return val.toString();
+}
+
+export {calculate, specOpCalculate};
