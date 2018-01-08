@@ -80,6 +80,7 @@ var stack = [];
 var outputString = "";
 var operator = true;
 var specOp = false;
+var calcValue = false;
 
 // Event Listeners
 buttons.addEventListener("click", addToStack);
@@ -93,38 +94,40 @@ function addToStack(e) {
         if (e.target.id === "operate") {
             stack.push(outputString);
             total = (0, _calculate.calculate)(stack);
-            stack = [];
-            outputString = total.toString();
             output.textContent = total;
+            outputString = total.toString();
+            calcValue = true;
+            stack = [];
             operator = false;
-            console.log(total, outputString);
             return;
         }
-        // Prevent operators from being pushed into stack first
         if (list.contains("operator")) {
+            // Prevent operators from being pushed into stack first
             if (!stack.length && !outputString.length || operator) {
                 return;
             }
             // Keep track of special operators like '+-', or sqrt
-            list.contains("spec-op") ? specOp = true : specOp = false;
             if (list.contains("spec-op")) {
+                console.log("hello");
                 specOp = true;
+                outputString = (0, _calculate.specOpCalculate)(Number(outputString), text);
+                output.textContent = outputString;
             } else {
                 specOp = false;
                 operator = true;
+                stack.push(outputString);
+                stack.push(text);
             }
-            stack.push(outputString);
-            stack.push(text);
-            outputString = "";
         } else {
-            // Prevent numbers from being added after special operators
-            if (specOp) {
+            if (specOp || text === "." && outputString.indexOf(text) !== -1 && !calcValue) {
                 return;
             }
-            if (text === "." && outputString.indexOf(text) !== -1) {
-                return;
+            if (operator || calcValue) {
+                outputString = "";
+                calcValue = false;
             }
             outputString += text;
+            output.textContent = outputString;
             operator = false;
         }
     }
@@ -163,18 +166,6 @@ function calculate(stack) {
                 case "/":
                     result /= Number(stack[i + 1]);
                     break;
-                case "√":
-                    result = Math.sqrt(result);
-                    amount = 2;
-                    break;
-                case "1/x":
-                    result = 1 / result;
-                    amount = 2;
-                    break;
-                case "+-":
-                    result = 0 - result;
-                    amount = 2;
-                    break;
                 case "^":
                     result = Math.pow(result, stack[i + 1]);
             }
@@ -184,7 +175,24 @@ function calculate(stack) {
     }
 }
 
+function specOpCalculate(num, op) {
+    var val = void 0;
+    switch (op) {
+        case "√":
+            val = Math.sqrt(num);
+            break;
+        case "1/x":
+            val = 1 / num;
+            break;
+        case "+-":
+            val = 0 - num;
+            break;
+    }
+    return val.toString();
+}
+
 exports.calculate = calculate;
+exports.specOpCalculate = specOpCalculate;
 
 /***/ })
 /******/ ]);
