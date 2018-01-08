@@ -1,71 +1,66 @@
 'use-strict'
 
+import {calculate, specOpCalculate} from "./calculate";
+
 const buttons = document.getElementById("buttons");
-const output = document.getElementById("input");
+const output = document.getElementById("operations");
 const equals = document.getElementById("operate");
 let stack = [];
 let outputString = "";
 let operator = true;
+let specOp = false;
+let calcValue = false;
 
 // Event Listeners
 buttons.addEventListener("click", addToStack);
 
 function addToStack(e) {
     if (e.target.nodeName === "BUTTON") {
+        let list = e.target.classList;
+        let total;
+        let text = e.target.textContent;
+        // If equals button pressed, push string into stack, and calculate
         if (e.target.id === "operate") {
             stack.push(outputString);
             total = calculate(stack);
-            console.log(total);
+            output.textContent = total;
+            outputString = total.toString();
+            calcValue = true;
+            stack = [];
+            operator = false;
             return;
         }
-        if (e.target.classList.contains("operator")) {
-            if (!stack.length && !outputString.length || operator) {
+        if (list.contains("operator")) {
+            // Prevent operators from being pushed into stack first
+            if ((!stack.length && !outputString.length) || operator) {
                 return;
             }
-            stack.push(outputString);
-            stack.push(e.target.textContent);
-            outputString = "";
-            operator = true;
+            // Keep track of special operators like '+-', or sqrt
+            if (list.contains("spec-op")) {
+                specOp = true;
+                outputString = specOpCalculate(Number(outputString), text);
+                output.textContent = outputString;
+            }
+            else {
+                specOp = false;
+                operator = true;
+                stack.push(outputString);
+                stack.push(text);
+            }
         }
         else {
-            outputString += e.target.textContent;
+            if (specOp || (text === "." && outputString.indexOf(text) !== -1) && !calcValue) {
+                return;
+            }
+            if (operator || calcValue) {
+                outputString = "";
+                calcValue = false;
+            }
+            outputString += text;
+            output.textContent = outputString;
             operator = false;
         }
     }
 }
 
-function calculate(stack) {
-    let result = 0;
-    if (stack.length === 1) {
-        return stack[0];
-    }
-    for (let i = 0; i < stack.length; i++) {
-        if (!isNaN(Number(stack[i]))) {
-            result += Number(stack[i]);
-        } 
-        else {
-            switch (stack[i]) {
-                case "+":
-                    result += Number(stack[i + 1]);
-                    break;
-                case "-":
-                    result -= Number(stack[i + 1]);
-                    break;
-                case "*":
-                    result *= Number(stack[i + 1]);
-                    break;
-                case "/":
-                    result /= Number(stack[i + 1]);
-                    break;
-                case "√":
-                    result = Math.sqrt(result);
-                    break;
-                case "+-":
-                    result = 0 - result;
-                    break;
-            }
-            stack.splice(0, 3, result);
-             return calculate(stack);
-        }
-    }
-}
+
