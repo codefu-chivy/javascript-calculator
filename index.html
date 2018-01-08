@@ -6,40 +6,35 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link href="./src/styles/styles.css" rel="stylesheet" type="text/css">
+		<link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
 	</head>
 	<body>
 		<div id="calculator">
 			<div id="input">
-				<p id="operations"></p>
+				<p id="op"></p>
+				<p id="operations">0</p>
 			</div>
 			<div id="buttons">
-				<div class="row">
-					<button class="op-button">MC</button>
-					<button class="op-button">MR</button>
-					<button class="op-button">MS</button>
-					<button class="op-button">M+</button>
-					<button class="op-button">M-</button>
-				</div>
 				<div class="row">
 					<button class="op-button">DEL</button>
 					<button class="op-button">CE</button>
 					<button class="op-button">C</button>
-					<button class="op-button operator">+-</button>
-					<button class="op-button operator">&#8730;</button>
+					<button class="op-button operator spec-op">+-</button>
+					<button class="op-button operator spec-op">&#8730;</button>
 				</div>
 				<div class="row">
 					<button class="num op-button">7</button>
 					<button class="num op-button">8</button>
 					<button class="num op-button">9</button>
 					<button class="op-button operator">/</button>
-					<button class="op-button operator">%</button>
+					<button class="op-button operator">^</button>
 				</div>
 				<div class="row">
 					<button class="num op-button">4</button>
 					<button class="num op-button">5</button>
 					<button class="num op-button">6</button>
 					<button class="op-button operator">*</button>
-					<button class="op-button operator">1/x</button>
+					<button class="op-button operator spec-op">1/x</button>
 				</div>
 				<div id="bottom" class="row">
 					<div id="last-2">
@@ -61,6 +56,6 @@
 				</div>
 			</div>
 		</div>
-		<script src="./src/js/index.js"></script>
+		<script src="./dist/bundle.js"></script>
 	</body>
 </html>
