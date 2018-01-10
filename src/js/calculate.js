@@ -1,8 +1,7 @@
 function calculate(stack) {
     let result = 0;
-    let amount = 3;
     if (stack.length === 1) {
-        return stack[0];
+        return trim(stack[0]);
     }
     for (let i = 0; i < stack.length; i++) {
         if (!isNaN(Number(stack[i]))) {
@@ -46,5 +45,15 @@ function specOpCalculate(num, op) {
     }
     return val.toString();
 }
+
+function trim(num) {
+    let numStr = num.toString();
+    if (numStr.indexOf("e") !== -1) {
+        let e = numStr.indexOf("e");
+        return Number(`${numStr.slice(0, 7)}${numStr.slice(e)}`);
+    }
+    return num;
+}
+
 
 export {calculate, specOpCalculate};
