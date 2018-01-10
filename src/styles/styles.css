@@ -25,10 +25,19 @@ body {
     margin-bottom: 20px;
     height: 60px;
 }
-#operations {
-    font-size: 25px;
+#operations, #op {
     text-align: right;
     padding-right: 15px;
+    overflow: hidden;
+}
+#operations {
+    font-size: 25px;
+    margin: 0px;
+}
+#op {
+    margin: 3px;
+    font-size: 15px;
+    height: 20px;
 }
 #buttons {
     margin: 5px auto;
@@ -40,6 +49,7 @@ body {
     font-size: 18px;
     margin: 2px;
     font-family: inherit;
+    box-shadow: 0 0 10px #403E3E;
 }
 .op-button:hover {
     cursor: pointer;
